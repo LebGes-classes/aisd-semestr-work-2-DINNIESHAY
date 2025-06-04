@@ -3,6 +3,7 @@
 
 #include <list>
 #include <map>
+#include <set>
 #include <vector>
 
 //Ориентированный граф
@@ -16,15 +17,19 @@ public:
   std::list<int> getNeighbours(int vertex);
   //Проверка, имеет ли граф цикл
   bool hasCycle();
+  //Топологическая сортировка
+  std::vector<int> topologicalSort();
   //Вывод списка смежности
   void print();
 
 private:
 
-  //Список смежности
-  std::map<int, std::list<int>> adjList;
+  //Множество вершин графа
+  std::set<int> vertices;
   //Размер графа
   int numOfVertices = 0;
+  //Список смежности
+  std::map<int, std::list<int>> adjList;
 
   //Цвета (статус) вершин для DFS
   enum Color
@@ -34,8 +39,10 @@ private:
     BLACK //Вершина полностью обработана
   };
 
-  //Проверка наличия цикла с помощью DFS
-  bool dfsHasCycle(int vertex, std::vector<Color> & colors);
+  //Вспомогательный метод для проверки наличия цикла на основе поиска в глубину (DFS)
+  bool dfsHasCycle(int vertex, std::map<int, Color> & colors);
+  //Вспомогательный метод для топологическая сортировки на основе поиска в глубину (DFS)
+  void dfsTopologicalSort(int vertex, std::map<int, bool> & visited, std::vector<int> & orderedVertices);
 };
 
 #endif
